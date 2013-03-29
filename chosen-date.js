@@ -1,15 +1,15 @@
-var DateChosen = function( elements, options )
+var ChosenDate = function( elements, options )
 {
   this.elements = elements;
   this.options = jQuery.extend( this.defaults, options );
   this.attach();
 
-}; DateChosen.prototype = {
+}; ChosenDate.prototype = {
 
   defaults: {
-    dateFormat: 'MMMM D YYYY' // format to use for each option (in moment.js format)
-    , startOffset: 1  // how far in the past (in months) to start this chosen
-    , endOffset: 1    // how far in the future (in days) to start this chosen
+    dateFormat: 'MMM D YYYY' // format to use for each option (in moment.js format)
+    , startOffset: 0  // how far in the past (in negative months) to start this chosen.. eg.. -1
+    , endOffset: 1    // how far in the future (in months) to start this chosen..eg 3
   }
 
   , attach: function( ) {
@@ -18,7 +18,7 @@ var DateChosen = function( elements, options )
     // attachs this to $(this)
     //
 
-    var now = moment().add('months', -this.options.startOffset)
+    var now = moment().add('months', this.options.startOffset)
       , key = '', value = ''
       , options = [];
     
@@ -42,8 +42,8 @@ var DateChosen = function( elements, options )
 //
 
 (function($) {
-  $.fn.dateChosen = function(args) {
-    new DateChosen(this, args);
+  $.fn.chosenDate = function(args) {
+    new ChosenDate(this, args);
     return this;
   };
 })(jQuery);
