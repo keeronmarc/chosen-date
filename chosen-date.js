@@ -1,8 +1,8 @@
-var ChosenDate = function( elements, options )
+var ChosenDate = function( elements, args )
 {
   this.elements = elements;
-  this.options = jQuery.extend( this.defaults, options );
-  this.attach();
+  this.options = this.defaults; //jQuery.extend( this.defaults, options );
+  this.attach( args );
 
 }; ChosenDate.prototype = {
 
@@ -12,7 +12,7 @@ var ChosenDate = function( elements, options )
     , endOffset: 1    // how far in the future (in months) to start this chosen..eg 3
   }
 
-  , attach: function( ) {
+  , attach: function( args ) {
 
     //
     // attachs this to $(this)
@@ -20,14 +20,21 @@ var ChosenDate = function( elements, options )
 
     var now = moment().add('months', this.options.startOffset)
       , key = '', value = ''
-      , options = [];
+      , options = []
+      , selected = args.selected ? moment(args.selected) : moment()
+      , selectedVal = ''
+      ;
     
     var endMonth = parseInt(now.format('M')) + this.options.endOffset;
     var endYear = moment().add('months', this.options.endOffset).format('YYYY');
 
     while( parseInt(now.format('M')) <= endMonth && parseInt(now.format('M')) <= endYear )
     {
-      options.push('<option value="'+ value +'">'+ now.format(this.options.dateFormat) +'</option>');
+      value = now.format(this.options.dateFormat);
+      
+      selectedVal = value == selected.format(this.options.dateFormat) ? ' selected' : ''
+      
+      options.push('<option value="'+ value +'"' + selectedVal + '>' + value + '</option>');
       now.add('days', 1);
     }
 
